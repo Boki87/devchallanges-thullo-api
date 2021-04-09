@@ -16,6 +16,8 @@ connectDB();
 const auth = require("./routes/auth");
 const boards = require("./routes/boards");
 const users = require("./routes/users");
+const lists = require("./routes/lists");
+const cards = require("./routes/cards");
 
 const app = express();
 
@@ -34,6 +36,8 @@ if (process.env.NODE_ENV == "development") {
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/boards", boards);
 app.use("/api/v1/users", users);
+app.use("/api/v1/lists", lists);
+app.use("/api/v1/cards", cards);
 
 app.use(errorHandler);
 
