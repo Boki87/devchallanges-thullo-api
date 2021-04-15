@@ -33,8 +33,16 @@ exports.createCard = asyncHandler(async (req, res, next) => {
 // @route       GET /api/v1/cards/:id
 // @access      Private
 exports.getCard = asyncHandler(async (req, res, next) => {
-  const card = await Card.findById(req.params.id);
-  console.log(card);
+  const card = await Card.findById(req.params.id)
+    .populate({
+      path: "listId",
+      select: "title",
+    })
+    .populate({
+      path: "members",
+      select: "name photo",
+    });
+
   res.status(200).json({
     success: true,
     data: card,
@@ -48,7 +56,15 @@ exports.updateCard = asyncHandler(async (req, res, next) => {
   const card = await Card.findOneAndUpdate({ _id: req.params.id }, req.body, {
     new: true,
     runValidators: true,
-  });
+  })
+    .populate({
+      path: "listId",
+      select: "title",
+    })
+    .populate({
+      path: "members",
+      select: "name photo",
+    });
 
   res.status(200).json({
     success: true,

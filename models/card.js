@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const LabelSchema = new mongoose.Schema({
+  title: String,
+  color: String,
+});
+
 const CardSchema = new mongoose.Schema(
   {
     title: {
@@ -33,6 +38,7 @@ const CardSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    labels: [LabelSchema],
     // cards: [],
     createdAt: {
       type: Date,

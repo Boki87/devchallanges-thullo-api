@@ -10,7 +10,11 @@ exports.getLists = asyncHandler(async (req, res, next) => {
   console.log(req.params);
   const lists = await List.find({ boardId: req.params.id }).populate({
     path: "cards",
-    select: "title listId position members coverPhoto",
+    select: "title listId position members coverPhoto labels",
+    populate: {
+      path: "members",
+      select: "name photo",
+    },
   });
 
   res.status(200).json({
