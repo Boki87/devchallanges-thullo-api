@@ -41,6 +41,14 @@ exports.getCard = asyncHandler(async (req, res, next) => {
     .populate({
       path: "members",
       select: "name photo",
+    })
+    .populate({
+      path: "comments",
+      select: "text createdBy createdAt",
+      populate: {
+        path: "createdBy",
+        select: "name photo",
+      },
     });
 
   res.status(200).json({
@@ -64,6 +72,14 @@ exports.updateCard = asyncHandler(async (req, res, next) => {
     .populate({
       path: "members",
       select: "name photo",
+    })
+    .populate({
+      path: "comments",
+      select: "text createdBy createdAt",
+      populate: {
+        path: "createdBy",
+        select: "name photo",
+      },
     });
 
   res.status(200).json({

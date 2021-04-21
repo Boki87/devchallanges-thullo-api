@@ -5,6 +5,15 @@ const LabelSchema = new mongoose.Schema({
   color: String,
 });
 
+const AttachmentSchema = new mongoose.Schema({
+  name: String,
+  url: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 const CardSchema = new mongoose.Schema(
   {
     title: {
@@ -39,7 +48,13 @@ const CardSchema = new mongoose.Schema(
       default: "",
     },
     labels: [LabelSchema],
-    // cards: [],
+    attachments: [AttachmentSchema],
+    comments: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Comment",
+      },
+    ],
     createdAt: {
       type: Date,
       default: Date.now,

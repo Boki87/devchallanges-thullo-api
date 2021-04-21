@@ -18,6 +18,8 @@ const boards = require("./routes/boards");
 const users = require("./routes/users");
 const lists = require("./routes/lists");
 const cards = require("./routes/cards");
+const comments = require("./routes/comments");
+const files = require("./routes/files");
 
 const app = express();
 
@@ -38,6 +40,8 @@ app.use("/api/v1/boards", boards);
 app.use("/api/v1/users", users);
 app.use("/api/v1/lists", lists);
 app.use("/api/v1/cards", cards);
+app.use("/api/v1/comments", comments);
+app.use("/api/v1/files", files);
 
 app.use(errorHandler);
 
