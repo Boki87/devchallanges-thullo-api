@@ -2,6 +2,41 @@ const User = require("../models/user");
 const asyncHandler = require("../middleware/async");
 const ErrorResponse = require("../utils/errorResponse");
 
+// @desc        Update logged in user
+// @route       PUT /api/v1/auth
+// @access      Private
+exports.updateMe = asyncHandler(async (req, res, next) => {
+  const { password, ...restOfProps } = req.body;
+
+  const updatedMe = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    restOfProps,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (req.body.password) {
+    const user = await User.findById(req.user._id).select("+password");
+    user.password = req.body.password;
+    await user.save();
+
+    const token = user.getSignedJwtToken();
+
+    res.status(200).json({
+      success: true,
+      data: user,
+      token: token,
+    });
+  } else {
+    res.status(200).json({
+      success: true,
+      data: updatedMe,
+    });
+  }
+});
+
 // @desc        Register user
 // @route       POST /api/v1/auth/register
 // @access      Public
@@ -70,13 +105,6 @@ exports.me = asyncHandler(async (req, res, next) => {
 const sendTokenResponse = (user, statusCode, res) => {
   //create token
   const token = user.getSignedJwtToken();
-
-  const options = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true,
-  };
 
   res.status(statusCode).json({
     success: true,
