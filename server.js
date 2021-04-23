@@ -23,9 +23,6 @@ const files = require("./routes/files");
 
 const app = express();
 
-//cors
-app.use(cors());
-
 //body parser
 app.use(express.json());
 
@@ -44,6 +41,9 @@ app.use("/api/v1/comments", comments);
 app.use("/api/v1/files", files);
 
 app.use(errorHandler);
+
+//cors
+app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
